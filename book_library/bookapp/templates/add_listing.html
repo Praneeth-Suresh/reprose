@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-    <form method="post" action="/">
+    <form method="post" action="#">
         {% csrf_token %}
         <input type="text" id="title" name="title" placeholder="Book title..." required>
         <br>
@@ -19,11 +19,20 @@
             <option value="Educational">Educational</option>
         </select>
         <br>
+        <select id="age" name="age">
+            <option value="3-7">3-7</option>
+            <option value="7-12">7-12</option>
+            <option value="12-18">12-18</option>
+            <option value="18+">18+</option>
+            <option value="21+">21+</option>
+        </select>
+        <br>
         <label for="sale">For Sale</label>
         <input type="radio" id="sale" name="sale"><br>
         <label for="borrow">For Lending</label>
         <input type="radio" id="borrow" name="borrow"><br>
         <input type="file" accept=".jpg, .jpeg, .png"><br>
+        <input type="number" id="price" name="price" placeholder="enter price..." required>
         <input type="submit" value="add listing">
     </form>
     <script>

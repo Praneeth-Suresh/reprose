@@ -23,15 +23,17 @@
     
 
     <div class = 'grid'>
-        {% for id, values in listings.items %}
+        {% for x in listings %}
             
                 <div class="grid-item">
                     <div class="card">
-                        <img class="card-img" src="{{values.imgurl}}" alt="book 1">
+                        <img class="card-img" src="" alt="book {{x.id}}">
                         <div class="card-content">
-                            <h1 class="card-header"> {{values.name}} </h1>
+                            <h1 class="card-header"> {{x.book_title}} </h1>
                             <p class="card-text">
-                                {{values.description}}
+                                {{x.isbn}}
+                                <br>
+                                {{x.genre}}
                             </p>
                             <button class="card-btn">
                                 Add to Cart <span>&rarr;</span>

@@ -234,6 +234,7 @@ def profile(request):
 
 def browse_listings(request):
     csrf_token = get_token(request)
+    listings = Listings.objects.all().values()
     if request.method == "POST":
         query = request.POST["query"]
         if 'user_login' in request.session:
@@ -245,7 +246,8 @@ def browse_listings(request):
                 "about_class": "inactive",
                 "contact_class": "inactive",
                 "query": query,
-                "madequery": ""
+                "madequery": "",
+                "listings": listings,
             }
         else:
             context = {
@@ -256,7 +258,8 @@ def browse_listings(request):
                 "about_class": "inactive",
                 "contact_class": "inactive",
                 "query": query,
-                "madequery": ""
+                "madequery": "",
+                "listings": listings,
             }
     else:
         if 'user_login' in request.session:
@@ -268,7 +271,8 @@ def browse_listings(request):
                 "about_class": "inactive",
                 "contact_class": "inactive",
                 "query": "",
-                "madequery": "hidden"
+                "madequery": "hidden",
+                "listings": listings,
             }
         else:
             context = {
@@ -279,11 +283,14 @@ def browse_listings(request):
                 "about_class": "inactive",
                 "contact_class": "inactive",
                 "query": "",
-                "madequery": "hidden"
+                "madequery": "hidden",
+                "listings": listings,
             }
+    template = loader.get_template('search.html')
+    return HttpResponse(template.render(context, request))
     
     # [book name, book imgurl, book description]
-    listings = {
+'''    listings = {
         'Book1': {
             'name': "Lord of the Rings",
             'imgurl': "https://hips.hearstapps.com/hmg-prod/images/lordoftherings-1636391090.jpg",
@@ -295,17 +302,14 @@ def browse_listings(request):
             'description': "Harry Potter is about a potter called Harry",
         },
     
-    }
+    }'''
 
     # add context and listings into a 2d dict called renderdata
 
-    renderdata = {}
+'''    renderdata = {}
 
     renderdata['context'] = context
-    renderdata['listings'] = listings
-
-    template = loader.get_template('search.html')
-    return HttpResponse(template.render(renderdata, request))
+    renderdata['listings'] = listings'''
 
 def add_listing(request):
     csrf_token = get_token(request)
@@ -316,10 +320,17 @@ def add_listing(request):
         book_title = request.POST["title"]
         isbn = request.POST["isbn"]
         genre = request.POST["genre"]
-        isForSale = bool(request.POST["sale"])
-        data = Listings(userid=request.session['user_login'], book_title=book_title, isbn=isbn, genre=genre, for_sale=isForSale, for_borrowing=not isForSale)
+        age = request.POST["age"]
+        if request.POST["sale"]:
+            isForSale = bool(request.POST["sale"])
+            isForBorrowing = not isForSale
+        else:
+            isForBorrowing = bool(request.POST["borrow"])
+            isForSale = not isForBorrowing
+        price = request.POST["price"]
+        data = Listings(userid=request.session['user_login'], book_title=book_title, isbn=isbn, genre=genre, age_group=age, for_sale=isForSale, for_borrowing=not isForSale, price=price)
         data.save()
-        print(data)
+        return redirect('homepage')
     else:
         template = loader.get_template('add_listing.html')
         return HttpResponse(template.render(context, request))
