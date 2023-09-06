@@ -1,0 +1,46 @@
+{% extends "website_template.html" %}
+{% load static %}
+
+{% block title %}
+    Browse
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'listings.css' %}">
+{% endblock %}
+
+{% block content %}
+{% csrf_token %}
+    <p {{madequery}}> Results for "{{query}}"</p>
+    <br>
+    <button {{isnothidden}} class="add-listing" onclick="location.href='/listing/add'">
+        &#43 Create Listing
+    </button>
+    <br>
+
+    <!-- Sample book db - remove later -->
+
+    
+
+    <div class = 'grid'>
+        {% for id, values in listings.items %}
+            
+                <div class="grid-item">
+                    <div class="card">
+                        <img class="card-img" src="{{values.imgurl}}" alt="book 1">
+                        <div class="card-content">
+                            <h1 class="card-header"> {{values.name}} </h1>
+                            <p class="card-text">
+                                {{values.description}}
+                            </p>
+                            <button class="card-btn">
+                                Add to Cart <span>&rarr;</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+    </div>
+
+
+{% endblock %}
