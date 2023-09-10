@@ -946,9 +946,40 @@ def checkout(request, userid):
                 "total_price": total_price,
                 "tax": tax,
                 "shipping": shipping,
-                "total": total_price + shipping + tax
+                "total": total_price + shipping + tax,
+                "userid": request.session['user_login'],
             }
             template = loader.get_template("checkout.html")
+            return HttpResponse(template.render(context, request))
+        else:
+            return redirect('cart')
+    else:
+        return redirect('login')
+
+
+def payment(request, userid):
+    if 'user_login' in request.session:
+        if request.session['user_login'] == userid:
+            userdata = users.objects.get(id=userid)
+            userdata = users.objects.get(id=userid)
+            users_cart = json.loads(userdata.cart)
+            book_ids = list(users_cart.values())
+            listings = Listings.objects.filter(id__in=book_ids)
+            total_price = 0
+            for book in listings:
+                total_price = total_price + book.price
+            if total_price >= 50:
+                shipping = 0
+            else:
+                shipping = 5
+            total_price += shipping
+            tax = 0.08*total_price
+            total_price += tax
+
+            context = {
+                "total_price": total_price,
+            }
+            template = loader.get_template("payment.html")
             return HttpResponse(template.render(context, request))
         else:
             return redirect('cart')
