@@ -2,8 +2,9 @@
 {% load static %}
 
 {% block title %}
-    login
+    Login
 {% endblock %}
+
 {% block head %}
     <link rel="stylesheet" href="{% static 'login.css' %}">
 {% endblock %}
@@ -13,7 +14,7 @@
     <form method="POST" action="#" class="signupform">
         {% csrf_token %}
 
-        <p style="color: red;" align="center">{{ error_message }}</p>
+        <p style="color: red;" align="center">{{ context.error_message }}</p>
         <div class="txt_field">
             <input type="text" id="email" name="email" required>
             <span></span>
