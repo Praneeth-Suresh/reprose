@@ -45,18 +45,6 @@ INSTALLED_APPS = [
     'bookapp',
 ]
 
-SITE_ID = 1
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'APP': {
-            'client_id': "271641449035-nqns24nn974ohm9o8g46a1vmi2ngf762.apps.googleusercontent.com",
-            'secret': "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",
-            'key': ''
-        }
-    }
-}
-
-
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
